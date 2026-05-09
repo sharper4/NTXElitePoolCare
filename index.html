@@ -1,370 +1,315 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>North Texas Elite Pool Care - Pool Calculator</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/src/style.css" />
-  </head>
-  <body>
-    <div class="orb orb-one" aria-hidden="true"></div>
-    <div class="orb orb-two" aria-hidden="true"></div>
-
-    <main class="layout">
-      <header class="hero panel reveal">
-        <div class="brand-row">
-          <img class="brand-logo" src="/PrimaryLogo.png" alt="North Texas Elite Pool Care logo" />
-          <div class="brand-title-actions">
-            <h1>Pool Calculator</h1>
-            <div class="hero-actions">
-              <button id="open-report" type="button" class="action-btn">Customer Report</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>North Texas Elite Pool Care - Professional Pool Services in Denton County</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="public/LogoAlone.png" alt="North Texas Elite Pool Care Logo" class="logo-img">
+                <img src="public/PhoneNumber.png" alt="940-808-POOL" class="phone-img">
             </div>
-          </div>
-        </div>
-        <div class="hero-detail-row">
-          <p class="hero-copy">
-            Professional water chemistry tools for clean pools and elite service. This calculator includes
-            complete chemistry balancing, CSI, goal ranges, volume estimation, and chemical-effects math.
-          </p>
-          <label id="weather-label" class="hero-weather"><span id="weather-label-text">Current weather conditions</span>
-            <input id="weather-conditions" type="text" value="Loading current weather..." />
-          </label>
-        </div>
-      </header>
-
-      <section class="panel controls reveal stagger-1">
-        <div class="grid three">
-          <label>
-            Units
-            <select id="units">
-              <option value="0">U.S.</option>
-              <option value="1">Metric</option>
-              <option value="2">Imperial</option>
-            </select>
-          </label>
-          <label>
-            Pool Size
-            <div class="input-line">
-              <input id="size" type="number" min="0" step="1" value="15000" />
-              <span id="size-unit" class="unit-pill">gallons</span>
-            </div>
-          </label>
-          <label>
-            Pool Water Temperature
-            <div class="input-line">
-              <input id="temp" type="number" min="0" step="1" value="84" />
-              <span id="temp-unit" class="unit-pill">Fahrenheit</span>
-            </div>
-          </label>
-        </div>
-      </section>
-
-      <section id="service-details-section" class="panel reveal stagger-1" hidden>
-        <div class="section-head">
-          <h2>Service Details</h2>
-        </div>
-        <div class="grid three">
-          <label>Customer
-            <input id="customer-name" type="text" placeholder="Customer name" />
-          </label>
-          <label>Address
-            <input id="customer-address" type="text" placeholder="Service address" />
-          </label>
-          <label>Technician
-              <input id="technician-name" type="text" value="" />
-          </label>
-        </div>
-      </section>
-
-      <div hidden aria-hidden="true">
-        <input id="tc-now" type="number" step="0.1" value="0" />
-        <input id="phosphates-now" type="number" step="1" value="0" />
-      </div>
-
-      <section class="panel reveal stagger-2">
-        <div class="section-head">
-          <h2>Chemistry Targets</h2>
-        </div>
-        <div class="chem-grid">
-          <article class="chem-card cya">
-            <div class="chem-head">
-              <h3>CYA</h3>
-              <p id="cya-target-range" class="range-pill">Target: --</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="cya-from" type="number" step="1" value="" /></label>
-              <label>Target <input id="cya-to" type="number" step="1" value="40" /></label>
-            </div>
-            <div id="cya-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card fc">
-            <div class="chem-head">
-              <h3>FC</h3>
-              <p id="fc-target-range" class="range-pill">Target range: -- ppm</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="fc-from" type="number" step="0.1" value="" /></label>
-              <label>Target <input id="fc-to" type="number" step="0.1" value="4" /></label>
-            </div>
-            <label class="check-line"><input id="fc-auto-target" type="checkbox" checked /> Auto-set FC target from CYA</label>
-            <div class="mini-grid mini-grid-compact-two">
-              <label>Bleach % <input id="fc-percent" type="number" step="0.1" value="8.25" /></label>
-              <label>Jug Size
-                <select id="fc-jug"></select>
-              </label>
-            </div>
-            <div class="mini-grid">
-              <label>Alt Chlorine
-                <select id="fc-pop"></select>
-              </label>
-            </div>
-            <div id="fc-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card ph">
-            <div class="chem-head">
-              <h3>pH</h3>
-              <p id="ph-target-range" class="range-pill">Target: --</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="ph-from" type="number" step="0.1" value="" /></label>
-              <label>Target <input id="ph-to" type="number" step="0.1" value="7.5" /></label>
-            </div>
-            <div class="mini-grid">
-              <label>Acid Strength
-                <select id="ma-pop"></select>
-              </label>
-              <label>Aeration
-                <select id="ph-aeration">
-                  <option value="none">None</option>
-                  <option value="low">Low</option>
-                  <option value="medium" selected>Medium</option>
-                  <option value="high">High</option>
-                </select>
-              </label>
-            </div>
-            <p class="note">pH math depends on current TA and Borate; large pH shifts are approximate.</p>
-            <div id="ph-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card ta">
-            <div class="chem-head">
-              <h3>TA</h3>
-              <p id="ta-target-range" class="range-pill">Target: --</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="ta-from" type="number" step="1" value="" /></label>
-              <label>Target <input id="ta-to" type="number" step="1" value="100" /></label>
-            </div>
-            <div id="ta-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card ch">
-            <div class="chem-head">
-              <h3>CH</h3>
-              <p id="ch-target-range" class="range-pill">Target: --</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="ch-from" type="number" step="1" value="" /></label>
-              <label>Target <input id="ch-to" type="number" step="1" value="260" /></label>
-            </div>
-            <label>Fill Water CH <input id="ch-fill" type="number" step="1" value="0" /></label>
-            <div id="ch-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card salt">
-            <div class="chem-head">
-              <h3>Salt</h3>
-              <p id="salt-target-range" class="range-pill">Target range: 2700-3400</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="salt-from" type="number" step="1" value="" /></label>
-              <label>Target <input id="salt-to" type="number" step="1" value="3100" /></label>
-            </div>
-            <div class="pair">
-              <label>SWG Runtime (hrs/day) <input id="swg-runtime" type="number" step="0.5" min="1" max="24" value="10" /></label>
-            </div>
-            <p class="note">Note: leave this blank if this is not a salt water pool</p>
-            <div id="salt-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card bor">
-            <div class="chem-head">
-              <h3>Borate</h3>
-              <p id="bor-target-range" class="range-pill">Target: --</p>
-            </div>
-            <div class="pair">
-              <label>Now <input id="bor-from" type="number" step="1" value="" /></label>
-              <label>Target <input id="bor-to" type="number" step="1" value="0" /></label>
-            </div>
-            <label>Borate Product
-              <select id="bor-pop"></select>
-            </label>
-            <div id="bor-result" class="result-block"></div>
-          </article>
-
-          <article class="chem-card csi">
-            <h3>CSI</h3>
-            <div id="csi-result" class="result-block"></div>
-            <p class="note">Less than -0.6 suggests corrosive conditions. Greater than 0.6 suggests scaling risk.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="panel reveal stagger-3">
-        <div class="section-head">
-          <h2>Suggested Levels</h2>
-        </div>
-        <div class="grid three">
-          <label>Goal Source
-            <select id="from-pop"></select>
-          </label>
-          <label>Primary Chlorine
-            <select id="chlorine-pop"></select>
-          </label>
-          <label>Pool Surface
-            <select id="surface-pop"></select>
-          </label>
-        </div>
-        <div id="goal-result" class="result-block"></div>
-      </section>
-
-      <section class="grid two reveal stagger-4">
-        <article class="panel">
-          <h2>Pool Volume Estimator</h2>
-          <div class="grid four">
-            <label>Width <input id="sz-wid" type="number" step="0.1" value="0" /></label>
-            <label>Length <input id="sz-len" type="number" step="0.1" value="0" /></label>
-            <label>Avg Depth <input id="sz-deep" type="number" step="0.1" value="0" /></label>
-            <label>Shape
-              <select id="sz-pop"></select>
-            </label>
-          </div>
-          <p id="sz-result" class="result-inline"></p>
-        </article>
-
-        <article class="panel">
-          <h2>Effects of Adding Chemicals</h2>
-          <div class="grid three">
-            <label>Amount <input id="eff-oz" type="number" step="0.1" value="0" /></label>
-            <label>Unit
-              <select id="eff-unit"></select>
-            </label>
-            <label>Chemical
-              <select id="eff-pop"></select>
-            </label>
-          </div>
-          <p id="eff-result" class="result-inline"></p>
-        </article>
-      </section>
-
-      <footer class="panel foot reveal stagger-5">
-        <p>
-          Tips: Add less than the full amount first, circulate, retest, then fine-tune. Powder volumes vary by manufacturer.
-        </p>
-      </footer>
-
-      <section id="report-view" class="report-view">
-        <div class="report-toolbar">
-          <button id="back-to-app" type="button" class="action-btn subtle">Back to Calculator</button>
-          <button id="print-report" type="button" class="action-btn">Print Report</button>
-        </div>
-
-        <article class="report-sheet">
-          <header class="report-header">
-            <img class="report-logo" src="/LogoAlone.png" alt="North Texas Elite Pool Care logo" />
-            <div class="report-header-center">
-              <img class="report-phone-img" src="/PhoneNumber.png" alt="940-808-POOL" />
-            </div>
-            <div class="report-header-title">
-              <h2>CHEMICAL BALANCING</h2>
-              <h2>WATER QUALITY REPORT</h2>
-            </div>
-          </header>
-
-          <section class="report-meta">
-            <p id="r-row-customer" hidden><strong>Customer:</strong> <span id="r-customer"></span></p>
-            <p id="r-row-address" hidden><strong>Address:</strong> <span id="r-address"></span></p>
-            <p><strong>Date:</strong> <span id="r-date"></span></p>
-            <p id="r-row-technician" hidden><strong>Technician:</strong> <span id="r-technician"></span></p>
-            <p><strong>Current weather conditions:</strong> <span id="r-weather"></span></p>
-            <p><strong>Pool size:</strong> <span id="r-pool-size"></span></p>
-            <p><strong>Pool temperature:</strong> <span id="r-pool-temp"></span></p>
-          </section>
-
-          <section class="report-block">
-            <h3>WATER CONDITION SUMMARY</h3>
-            <div class="condition-three-col check-row">
-              <label><input id="status-clear" type="checkbox" /> Crystal Clear &amp; Balanced</label>
-              <label><input id="status-immediate" type="checkbox" /> Immediate Attention Required</label>
-              <label><input id="status-minor" type="checkbox" checked /> Minor Adjustments Needed</label>
-            </div>
-          </section>
-
-          <section class="report-block">
-            <h3>PRECISION WATER ANALYSIS</h3>
-            <table class="report-table">
-              <thead>
-                <tr>
-                  <th>Test</th>
-                  <th>Result</th>
-                  <th>Ideal</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>Free Chlorine</td><td id="r-fc">--</td><td id="ideal-fc">--</td><td id="s-fc"></td></tr>
-                <tr><td>pH</td><td id="r-ph">--</td><td id="ideal-ph">--</td><td id="s-ph"></td></tr>
-                <tr><td>Alkalinity</td><td id="r-ta">--</td><td id="ideal-ta">--</td><td id="s-ta"></td></tr>
-                <tr><td>Calcium</td><td id="r-ch">--</td><td id="ideal-ch">--</td><td id="s-ch"></td></tr>
-                <tr><td>Stabilizer (CYA)</td><td id="r-cya">--</td><td id="ideal-cya">--</td><td id="s-cya"></td></tr>
-                <tr><td>Salt</td><td id="r-salt">--</td><td id="ideal-salt">--</td><td id="s-salt"></td></tr>
-              </tbody>
-            </table>
-          </section>
-
-          <section class="report-block report-two-col">
-            <div>
-              <div class="report-title-row">
-                <h3>ELITE TREATMENT PLAN</h3>
-                <p class="report-note-inline">to <u>perfectly</u> balance your water to the target today</p>
-              </div>
-              <ul id="r-treatment-list" class="check-list chemical-checklist"></ul>
-              <p class="report-note-muted">...only items checked were completed in today's action plan</p>
-            </div>
-            <div>
-              <div class="report-title-row">
-                <h3>ELITE FORECAST PLAN</h3>
-                <p class="report-note-inline">maintain water balance for 1 week in target range</p>
-              </div>
-              <ul id="r-forecast-list" class="check-list chemical-checklist"></ul>
-              <p class="report-note-muted">...only items checked were completed in today's action plan</p>
-            </div>
-          </section>
-
-          <section id="report-tech-insights" class="report-block" hidden>
-            <h3>TECHNICIAN INSIGHTS</h3>
-            <textarea id="r-insights" rows="2">Water chemistry adjusted based on maintaining target levels for one week. Continue circulation and retest as scheduled.</textarea>
-          </section>
-
-          <section id="report-elite-difference" class="report-block" hidden>
-            <h3>THE ELITE DIFFERENCE</h3>
-            <p>We do not just clean pools, we protect your investment.</p>
-            <ul class="check-list static static-grid">
-              <li>Precision water chemistry (not guesswork)</li>
-              <li>Pro-grade chemicals &amp; equipment</li>
-              <li>Consistent, reliable weekly service</li>
-              <li>Clear communication every visit</li>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#why-us" class="nav-link">Why Us</a></li>
+                <li><a href="#quote" class="nav-link">Get Quote</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
-          </section>
-        </article>
-      </section>
-    </main>
+        </div>
+    </nav>
 
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Clean Pools. Elite Service.</h1>
+            <p>Professional pool care for Denton County and surrounding areas</p>
+            <div class="hero-cta">
+                <a href="#quote" class="btn btn-primary">Request a Free Quote</a>
+                <a href="https://sharper4.github.io/PoolCalculator/" class="btn btn-secondary" target="_blank">Use Our Pool Calculator</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="public/Truck.png" alt="North Texas Elite Pool Care Service Truck" class="truck-img">
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <p class="section-subtitle">Fast, professional service with guaranteed results</p>
+            
+            <div class="services-grid">
+                <!-- Weekly Pool Cleaning -->
+                <div class="service-card">
+                    <div class="service-icon">🏊</div>
+                    <h3>Weekly Pool Cleaning</h3>
+                    <p>Consistent, reliable maintenance to keep your water crystal clear</p>
+                    <ul class="service-features">
+                        <li>✓ Surface skimming and debris removal</li>
+                        <li>✓ Vacuuming pool floor and walls</li>
+                        <li>✓ Brushing tile line and surfaces</li>
+                        <li>✓ Emptying skimmer and pump baskets</li>
+                        <li>✓ Equipment inspection and cleaning</li>
+                        <li>✓ Water level adjustments</li>
+                        <li>✓ Chemical testing and balancing</li>
+                    </ul>
+                </div>
+
+                <!-- One-Time Cleaning -->
+                <div class="service-card">
+                    <div class="service-icon">🧹</div>
+                    <h3>One-Time Pool Cleaning</h3>
+                    <p>Get your pool back to pristine condition fast</p>
+                    <ul class="service-features">
+                        <li>✓ Complete debris removal</li>
+                        <li>✓ Deep vacuuming and brushing</li>
+                        <li>✓ Basket and skimmer cleaning</li>
+                        <li>✓ Full chemical testing and balancing</li>
+                        <li>✓ Equipment inspection</li>
+                        <li>✓ Perfect for seasonal openings</li>
+                    </ul>
+                </div>
+
+                <!-- Water Testing & Chemical Balancing -->
+                <div class="service-card">
+                    <div class="service-icon">⚗️</div>
+                    <h3>Water Testing & Chemical Balancing</h3>
+                    <p>Complete water analysis using our proprietary pool calculator</p>
+                    <ul class="service-features">
+                        <li>✓ Chlorine, pH, Alkalinity testing</li>
+                        <li>✓ Calcium Hardness & Stabilizer analysis</li>
+                        <li>✓ Salt level testing (where applicable)</li>
+                        <li>✓ Precise chemical adjustments</li>
+                        <li>✓ Shock treatments when needed</li>
+                        <li>✓ Detailed balancing report</li>
+                        <li>✓ Algae prevention programs</li>
+                    </ul>
+                </div>
+
+                <!-- Green Pool Recovery -->
+                <div class="service-card">
+                    <div class="service-icon">🌱</div>
+                    <h3>Green Pool Recovery</h3>
+                    <p>Transform algae-ridden pools back to crystal clear</p>
+                    <ul class="service-features">
+                        <li>✓ Intensive shock treatment</li>
+                        <li>✓ Chemical correction</li>
+                        <li>✓ Complete debris removal</li>
+                        <li>✓ Deep cleaning</li>
+                        <li>✓ Filter system optimization</li>
+                        <li>✓ Follow-up until crystal clear</li>
+                        <li>✓ Usually 3-7 days to recovery</li>
+                    </ul>
+                </div>
+
+                <!-- Pool Tile Cleaning -->
+                <div class="service-card">
+                    <div class="service-icon">✨</div>
+                    <h3>Pool Tile Cleaning</h3>
+                    <p>Remove calcium buildup and stains for a sparkling finish</p>
+                    <ul class="service-features">
+                        <li>✓ Calcium deposit removal</li>
+                        <li>✓ Stain removal</li>
+                        <li>✓ Tile surface cleaning</li>
+                        <li>✓ Eco-friendly methods</li>
+                        <li>✓ Restores pool shine</li>
+                        <li>✓ Waterline restoration</li>
+                    </ul>
+                </div>
+
+                <!-- Filter Cleaning -->
+                <div class="service-card">
+                    <div class="service-icon">🔧</div>
+                    <h3>Filter Cleaning & Maintenance</h3>
+                    <p>Keep your filtration system running efficiently</p>
+                    <ul class="service-features">
+                        <li>✓ Cartridge filter cleaning</li>
+                        <li>✓ Sand filter cleaning</li>
+                        <li>✓ DE filter maintenance</li>
+                        <li>✓ Filter replacement available</li>
+                        <li>✓ Pressure testing</li>
+                        <li>✓ System optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="why-us" class="why-us">
+        <div class="container">
+            <h2>Why Choose North Texas Elite Pool Care?</h2>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Same Day Service Available</h3>
+                    <p>We respond quickly to get your pool in perfect condition fast</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">👥</div>
+                    <h3>Local Experts</h3>
+                    <p>Deep knowledge of Denton County pool care needs and Texas weather</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">✅</div>
+                    <h3>Guaranteed Results</h3>
+                    <p>We back our work with guaranteed satisfaction and crystal clear water</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🔬</div>
+                    <h3>Proprietary Calculator</h3>
+                    <p>We use our own pool calculator for precise chemical balancing</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">📱</div>
+                    <h3>Professional & Friendly</h3>
+                    <p>Expert service with a personal touch. We treat your pool like our own</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Transparent Communication</h3>
+                    <p>Clear pricing, honest assessments, and detailed service reports</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pool Gallery -->
+    <section class="gallery">
+        <div class="container">
+            <h2>Beautiful Pools That We've Maintained</h2>
+            <p class="section-subtitle">Showcase of our professional pool care work</p>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="public/Pool-1.JPG" alt="Crystal clear maintained pool">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/Pool-2.jpg" alt="Beautiful sparkling pool">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/Pool-3.jpg" alt="Professional pool cleaning">
+                </div>
+                <div class="gallery-item">
+                    <img src="public/Pool-4.jpg" alt="Pristine pool care result">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Area -->
+    <section class="service-area">
+        <div class="container">
+            <h2>Service Area</h2>
+            <p class="section-subtitle">We proudly serve Denton County and surrounding communities</p>
+            <div class="cities-grid">
+                <div class="city-tag">Denton</div>
+                <div class="city-tag">Argyle</div>
+                <div class="city-tag">Highland Village</div>
+                <div class="city-tag">Flower Mound</div>
+                <div class="city-tag">Corinth</div>
+                <div class="city-tag">Lake Dallas</div>
+                <div class="city-tag">Lewisville</div>
+                <div class="city-tag">The Colony</div>
+                <div class="city-tag">Carrollton</div>
+                <div class="city-tag">Frisco</div>
+                <div class="city-tag">And surrounding areas</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Form -->
+    <section id="quote" class="quote-section">
+        <div class="container">
+            <h2>Get Your Free Quote</h2>
+            <p class="section-subtitle">Tell us about your pool and we'\''ll provide a fast, no-obligation estimate</p>
+            
+            <form class="quote-form" id="quoteForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pool-address">Pool Address *</label>
+                        <input type="text" id="pool-address" name="poolAddress" required placeholder="Enter your pool address">
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Type *</label>
+                        <select id="service" name="service" required>
+                            <option value="">-- Select a service --</option>
+                            <option value="weekly-cleaning">Weekly Pool Cleaning</option>
+                            <option value="one-time-cleaning">One-Time Pool Cleaning</option>
+                            <option value="chemical-balancing">Water Testing & Chemical Balancing</option>
+                            <option value="green-recovery">Green Pool Recovery</option>
+                            <option value="tile-cleaning">Pool Tile Cleaning</option>
+                            <option value="filter-cleaning">Filter Cleaning & Maintenance</option>
+                            <option value="other">Other / Not Sure</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Questions or Additional Details</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us more about your pool, any concerns, or questions you have..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">Get My Free Quote</button>
+                <p class="form-note">We'\''ll contact you within 24 hours with your personalized quote</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-method">
+                    <h3>📞 Call or Text</h3>
+                    <p class="contact-info"><a href="tel:9408088765">940-808-POOL</a></p>
+                    <p class="contact-note">We accept calls and texts. Same-day response available.</p>
+                </div>
+                <div class="contact-method">
+                    <h3>✉️ Email</h3>
+                    <p class="contact-info"><a href="mailto:ntxelitepoolcare@gmail.com">ntxelitepoolcare@gmail.com</a></p>
+                    <p class="contact-note">We respond to emails within 24 hours</p>
+                </div>
+                <div class="contact-method">
+                    <h3>👍 Follow Us</h3>
+                    <p class="contact-info"><a href="https://www.facebook.com/ntxelitepoolcare" target="_blank">Facebook</a></p>
+                    <p class="contact-note">Follow for tips, updates, and special offers</p>
+                </div>
+                <div class="contact-method">
+                    <h3>🧮 Pool Calculator</h3>
+                    <p class="contact-info"><a href="https://sharper4.github.io/PoolCalculator/" target="_blank">Free Tool</a></p>
+                    <p class="contact-note">Use our proprietary calculator for chemical balancing</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 North Texas Elite Pool Care. All rights reserved.</p>
+            <p>Serving Denton County and Surrounding Areas | Professional Pool Maintenance & Care</p>
+        </div>
+    </footer>
+
+    <script src="src/main.js"></script>
+</body>
 </html>
