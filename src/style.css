@@ -408,6 +408,9 @@ body {
     background-color: #fdfefe;
     position: relative;
     z-index: 2;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .quote-face-back {
@@ -422,6 +425,21 @@ body {
     align-items: center;
     text-align: center;
     padding: 36px 26px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.quote-flip-card.flipped .quote-face-front {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.quote-flip-card.flipped .quote-face-back {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .quote-face-back h3 {
