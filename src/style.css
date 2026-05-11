@@ -436,11 +436,32 @@ body {
     margin-top: 20px;
 }
 
+.quote-form button:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
 .form-note {
     text-align: center;
     color: var(--text-light);
     font-size: 14px;
     margin-top: 15px;
+}
+
+.form-status {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    min-height: 22px;
+}
+
+.form-status.success {
+    color: #0c6a39;
+}
+
+.form-status.error {
+    color: #b42318;
 }
 
 /* Contact Section */

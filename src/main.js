@@ -1,39 +1,79 @@
-// Handle form submission
-document.getElementById('quoteForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+// Handle form submission with background delivery (no visitor email app popup)
+const quoteForm = document.getElementById('quoteForm');
 
-    // Get form values
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const poolAddress = document.getElementById('pool-address').value;
-    const service = document.getElementById('service').value;
-    const message = document.getElementById('message').value;
+if (quoteForm) {
+    quoteForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
-    // Validate form
-    if (!name || !phone || !poolAddress || !service) {
-        alert('Please fill in all required fields');
-        return;
-    }
+        const submitButton = quoteForm.querySelector('button[type="submit"]');
+        const statusEl = document.getElementById('quoteStatus');
 
-    // Format the quote request message
-    const emailBody = `
-Quote Request from: ${name}
-Phone: ${phone}
-Pool Address: ${poolAddress}
-Service Type: ${service}
-Additional Notes: ${message || 'None'}
-    `;
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const poolAddress = document.getElementById('pool-address').value.trim();
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value.trim();
 
-    // Send email via mailto
-    const mailtoLink = `mailto:ntxelitepoolcare@gmail.com?subject=Quote Request from ${encodeURIComponent(name)}&body=${encodeURIComponent(emailBody)}`;
-    window.location.href = mailtoLink;
+        if (!name || !phone || !poolAddress || !service) {
+            if (statusEl) {
+                statusEl.textContent = 'Please fill in all required fields.';
+                statusEl.className = 'form-status error';
+            }
+            return;
+        }
 
-    // Optional: Show success message
-    setTimeout(() => {
-        alert('Thank you! Your quote request has been sent. We will contact you within 24 hours.');
-        document.getElementById('quoteForm').reset();
-    }, 500);
-});
+        if (statusEl) {
+            statusEl.textContent = '';
+            statusEl.className = 'form-status';
+        }
+
+        const originalButtonText = submitButton ? submitButton.textContent : '';
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+        }
+
+        try {
+            const response = await fetch('https://formsubmit.co/ajax/ntxelitepoolcare@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `NTX Quote Request - ${name}`,
+                    _captcha: 'false',
+                    name,
+                    phone,
+                    poolAddress,
+                    service,
+                    message: message || 'None'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit quote request');
+            }
+
+            if (statusEl) {
+                statusEl.textContent = "Thank you. Your request has been received. We'll contact you within 24 hours to connect you with a qualified pool professional in your area. NEED IMMEDIATE HELP? Call or text 940-808-POOL.";
+                statusEl.className = 'form-status success';
+            }
+
+            quoteForm.reset();
+        } catch (error) {
+            if (statusEl) {
+                statusEl.textContent = 'Sorry, there was a problem sending your request. Please call or text 940-808-POOL for immediate help.';
+                statusEl.className = 'form-status error';
+            }
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText || 'Get My Free Quote';
+            }
+        }
+    });
+}
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
