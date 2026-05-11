@@ -381,13 +381,83 @@ body {
     color: var(--text-dark);
 }
 
-.quote-form {
+.quote-flip-card {
     max-width: 600px;
     margin: 28px auto 0;
-    background-color: #fdfefe;
-    padding: 30px;
+    perspective: 1400px;
+}
+
+.quote-flip-inner {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+}
+
+.quote-flip-card.flipped .quote-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.quote-face {
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(5, 39, 83, 0.12);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.quote-face-front {
+    background-color: #fdfefe;
+    position: relative;
+    z-index: 2;
+}
+
+.quote-face-back {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+    background-color: #dfe5f1;
+    color: #4a6487;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 36px 26px;
+}
+
+.quote-face-back h3 {
+    color: #1f4aa8;
+    font-size: 52px;
+    line-height: 1;
+    margin-bottom: 22px;
+}
+
+.quote-face-back p {
+    font-size: 22px;
+    line-height: 1.45;
+    max-width: 540px;
+    margin-bottom: 18px;
+}
+
+.quote-face-back .success-help {
+    margin-top: 6px;
+    margin-bottom: 8px;
+    font-size: 42px;
+    color: #506d93;
+    font-weight: 700;
+}
+
+.quote-face-back .success-phone {
+    font-size: 44px;
+    margin-bottom: 0;
+}
+
+.quote-face-back .success-phone a {
+    color: #1f4aa8;
+    font-weight: 700;
+}
+
+.quote-form {
+    padding: 30px;
 }
 
 .form-row {
@@ -581,6 +651,22 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .quote-face-back h3 {
+        font-size: 44px;
+    }
+
+    .quote-face-back p {
+        font-size: 20px;
+    }
+
+    .quote-face-back .success-help {
+        font-size: 36px;
+    }
+
+    .quote-face-back .success-phone {
+        font-size: 34px;
+    }
+
     .btn {
         width: 100%;
     }
@@ -613,5 +699,25 @@ body {
 
     .quote-form {
         padding: 20px;
+    }
+
+    .quote-face-back {
+        padding: 28px 18px;
+    }
+
+    .quote-face-back h3 {
+        font-size: 36px;
+    }
+
+    .quote-face-back p {
+        font-size: 18px;
+    }
+
+    .quote-face-back .success-help {
+        font-size: 30px;
+    }
+
+    .quote-face-back .success-phone {
+        font-size: 28px;
     }
 }

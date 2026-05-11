@@ -7,6 +7,7 @@ if (quoteForm) {
 
         const submitButton = quoteForm.querySelector('button[type="submit"]');
         const statusEl = document.getElementById('quoteStatus');
+        const quoteFlipCard = document.getElementById('quoteFlipCard');
 
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -56,11 +57,15 @@ if (quoteForm) {
             }
 
             if (statusEl) {
-                statusEl.textContent = "Thank you. Your request has been received. We'll contact you within 24 hours to connect you with a qualified pool professional in your area. NEED IMMEDIATE HELP? Call or text 940-808-POOL.";
-                statusEl.className = 'form-status success';
+                statusEl.textContent = '';
+                statusEl.className = 'form-status';
             }
 
             quoteForm.reset();
+
+            if (quoteFlipCard) {
+                quoteFlipCard.classList.add('flipped');
+            }
         } catch (error) {
             if (statusEl) {
                 statusEl.textContent = 'Sorry, there was a problem sending your request. Please call or text 940-808-POOL for immediate help.';
