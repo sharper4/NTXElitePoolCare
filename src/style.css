@@ -529,6 +529,22 @@ body {
     cursor: not-allowed;
 }
 
+.build-badge {
+    position: fixed;
+    right: 12px;
+    bottom: 10px;
+    z-index: 1000;
+    padding: 4px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 4px;
+    background: rgba(5, 39, 83, 0.78);
+    color: #ffffff;
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    pointer-events: none;
+}
+
 .form-note {
     text-align: center;
     color: var(--text-light);

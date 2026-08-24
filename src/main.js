@@ -11,11 +11,12 @@ if (quoteForm) {
 
         const name = document.getElementById('name').value.trim();
         const phone = document.getElementById('phone').value.trim();
+        const email = document.getElementById('email').value.trim();
         const poolAddress = document.getElementById('pool-address').value.trim();
         const service = document.getElementById('service').value;
         const message = document.getElementById('message').value.trim();
 
-        if (!name || !phone || !poolAddress || !service) {
+        if (!name || !phone || !email || !poolAddress || !service) {
             if (statusEl) {
                 statusEl.textContent = 'Please fill in all required fields.';
                 statusEl.className = 'form-status error';
@@ -44,8 +45,10 @@ if (quoteForm) {
                 body: JSON.stringify({
                     _subject: `NTX Quote Request - ${name}`,
                     _captcha: 'false',
+                    _replyto: `${name} <${email}>`,
                     name,
                     phone,
+                    email,
                     poolAddress,
                     service,
                     message: message || 'None'
@@ -110,3 +113,18 @@ if (phoneInput) {
 }
 
 console.log('North Texas Elite Pool Care website loaded');
+
+const buildBadge = document.createElement('div');
+buildBadge.className = 'build-badge';
+const buildDate = new Date(document.lastModified);
+if (Number.isNaN(buildDate.getTime())) {
+    buildBadge.textContent = 'Build live';
+} else {
+    const year = buildDate.getFullYear();
+    const month = String(buildDate.getMonth() + 1).padStart(2, '0');
+    const day = String(buildDate.getDate()).padStart(2, '0');
+    const hour = String(buildDate.getHours()).padStart(2, '0');
+    const minute = String(buildDate.getMinutes()).padStart(2, '0');
+    buildBadge.textContent = `Build ${year}.${month}.${day}.${hour}${minute}`;
+}
+document.body.appendChild(buildBadge);
