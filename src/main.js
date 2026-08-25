@@ -114,6 +114,16 @@ if (phoneInput) {
 
 console.log('North Texas Elite Pool Care website loaded');
 
+document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Backspace') return;
+    const target = event.target;
+    const isEditable = target instanceof HTMLInputElement
+        || target instanceof HTMLTextAreaElement
+        || target instanceof HTMLSelectElement
+        || target?.isContentEditable;
+    if (!isEditable) event.preventDefault();
+});
+
 const buildBadge = document.createElement('div');
 buildBadge.className = 'build-badge';
 const buildDate = new Date(document.lastModified);
