@@ -192,6 +192,18 @@ body {
     margin-bottom: 30px;
 }
 
+.service-note {
+    max-width: 860px;
+    margin: -10px auto 26px;
+    padding: 10px 14px;
+    text-align: center;
+    color: var(--primary-dark);
+    background-color: #e6f2ff;
+    border: 1px solid #c6ddf7;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
