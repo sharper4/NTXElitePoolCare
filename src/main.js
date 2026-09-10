@@ -112,9 +112,50 @@ if (phoneInput) {
     });
 }
 
+function ensureQuoteFormRuntimeSetup() {
+    const poolAddressInput = document.getElementById('pool-address');
+    if (!poolAddressInput) return { poolAddressInput: null, poolAddressSuggestions: null };
+
+    poolAddressInput.setAttribute('autocomplete', 'street-address');
+
+    let poolAddressSuggestions = document.getElementById('pool-address-suggestions');
+    if (!poolAddressSuggestions) {
+        poolAddressSuggestions = document.createElement('datalist');
+        poolAddressSuggestions.id = 'pool-address-suggestions';
+        poolAddressInput.insertAdjacentElement('afterend', poolAddressSuggestions);
+    }
+    poolAddressInput.setAttribute('list', 'pool-address-suggestions');
+
+    const serviceSelect = document.getElementById('service');
+    if (serviceSelect) {
+        const selectedValue = serviceSelect.value;
+        const expectedOptions = [
+            { value: '', label: '-- Select a service --' },
+            { value: 'weekly-service', label: 'Weekly pool service: water balancing and/or cleaning' },
+            { value: 'one-time-or-vacation', label: 'One-time pool cleaning or vacation maintenance' },
+            { value: 'green-recovery', label: 'Green pool recovery' },
+            { value: 'filter-cleaning', label: 'Filter cleaning' },
+            { value: 'other', label: 'Other / Not Sure' }
+        ];
+
+        serviceSelect.innerHTML = '';
+        expectedOptions.forEach(({ value, label }) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            serviceSelect.appendChild(option);
+        });
+
+        if (expectedOptions.some((entry) => entry.value === selectedValue)) {
+            serviceSelect.value = selectedValue;
+        }
+    }
+
+    return { poolAddressInput, poolAddressSuggestions };
+}
+
 // Address autocomplete for quote form
-const poolAddressInput = document.getElementById('pool-address');
-const poolAddressSuggestions = document.getElementById('pool-address-suggestions');
+const { poolAddressInput, poolAddressSuggestions } = ensureQuoteFormRuntimeSetup();
 if (poolAddressInput && poolAddressSuggestions) {
     let addressRequestTimer = null;
     let activeAddressRequestId = 0;
