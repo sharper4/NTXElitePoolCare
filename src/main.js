@@ -10,7 +10,7 @@ function normalizeGalleryLayout() {
         { src: 'public/Pool-2.jpg', alt: 'Beautiful sparkling pool', caption: '' },
         { src: 'public/Pool-3.jpg', alt: 'Professional pool cleaning', caption: '' },
         { src: 'public/Pool-4.jpg', alt: 'Pristine pool care result', caption: '' },
-        { src: 'public/Pool-5.jpg?v=20260910-2', alt: 'Green-to-clean pool recovery project', caption: 'Green-to-Clean' }
+        { src: 'public/Pool-5.jpg?v=20260910-3', alt: 'Green-to-clean pool recovery project', caption: 'Green-to-Clean' }
     ];
 
     galleryGrid.innerHTML = '';
