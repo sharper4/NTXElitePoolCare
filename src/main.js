@@ -112,6 +112,75 @@ if (phoneInput) {
     });
 }
 
+// Address autocomplete for quote form
+const poolAddressInput = document.getElementById('pool-address');
+const poolAddressSuggestions = document.getElementById('pool-address-suggestions');
+if (poolAddressInput && poolAddressSuggestions) {
+    let addressRequestTimer = null;
+    let activeAddressRequestId = 0;
+
+    const clearAddressSuggestions = () => {
+        poolAddressSuggestions.innerHTML = '';
+    };
+
+    const pushAddressSuggestion = (text) => {
+        const option = document.createElement('option');
+        option.value = text;
+        poolAddressSuggestions.appendChild(option);
+    };
+
+    const fetchAddressSuggestions = async (query, requestId) => {
+        const endpoint = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=us&limit=6&q=${encodeURIComponent(query)}`;
+        const response = await fetch(endpoint, {
+            headers: {
+                'Accept-Language': 'en-US,en;q=0.9'
+            }
+        });
+        if (!response.ok) return;
+
+        const results = await response.json();
+        if (requestId !== activeAddressRequestId) return;
+
+        clearAddressSuggestions();
+        const unique = new Set();
+
+        results.forEach((item) => {
+            const label = String(item?.display_name || '').trim();
+            if (!label || unique.has(label)) return;
+            unique.add(label);
+            pushAddressSuggestion(label);
+        });
+    };
+
+    poolAddressInput.addEventListener('input', () => {
+        const query = poolAddressInput.value.trim();
+        activeAddressRequestId += 1;
+        const requestId = activeAddressRequestId;
+
+        if (addressRequestTimer) {
+            clearTimeout(addressRequestTimer);
+            addressRequestTimer = null;
+        }
+
+        if (query.length < 4) {
+            clearAddressSuggestions();
+            return;
+        }
+
+        addressRequestTimer = setTimeout(() => {
+            fetchAddressSuggestions(query, requestId).catch(() => {
+                if (requestId === activeAddressRequestId) {
+                    clearAddressSuggestions();
+                }
+            });
+        }, 220);
+    });
+
+    poolAddressInput.addEventListener('blur', () => {
+        setTimeout(clearAddressSuggestions, 250);
+    });
+}
+
 console.log('North Texas Elite Pool Care website loaded');
 
 document.addEventListener('keydown', (event) => {
