@@ -1,6 +1,47 @@
 // Handle form submission with background delivery (no visitor email app popup)
 const quoteForm = document.getElementById('quoteForm');
 
+function normalizeGalleryLayout() {
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (!galleryGrid) return;
+
+    const desired = [
+        { src: 'public/Pool-1.JPG', alt: 'Crystal clear maintained pool', caption: '' },
+        { src: 'public/Pool-2.jpg', alt: 'Beautiful sparkling pool', caption: '' },
+        { src: 'public/Pool-3.jpg', alt: 'Professional pool cleaning', caption: '' },
+        { src: 'public/Pool-4.jpg', alt: 'Pristine pool care result', caption: '' },
+        { src: 'public/11.png', alt: 'Green-to-clean pool recovery project', caption: 'Green-to-Clean', fallback: 'public/green-to-clean-collage.jpg' }
+    ];
+
+    galleryGrid.innerHTML = '';
+    desired.forEach((entry) => {
+        const card = document.createElement('div');
+        card.className = 'gallery-item';
+
+        const image = document.createElement('img');
+        image.src = entry.src;
+        image.alt = entry.alt;
+        if (entry.fallback) {
+            image.onerror = () => {
+                image.onerror = null;
+                image.src = entry.fallback;
+            };
+        }
+        card.appendChild(image);
+
+        if (entry.caption) {
+            const caption = document.createElement('p');
+            caption.className = 'gallery-caption';
+            caption.textContent = entry.caption;
+            card.appendChild(caption);
+        }
+
+        galleryGrid.appendChild(card);
+    });
+}
+
+normalizeGalleryLayout();
+
 if (quoteForm) {
     quoteForm.addEventListener('submit', async function(e) {
         e.preventDefault();
